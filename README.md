@@ -188,9 +188,8 @@ with raw as (
 select * from raw
 
 
-## staging_customers model
+## staging_customers
 
-```sql
 {{ config(materialized='view', schema='analytics') }}
 
 with raw as (
@@ -201,7 +200,7 @@ with raw as (
             when lower(trim(HasLoan)) in ('yes', 'y', 'true', '1') then true
             when lower(trim(HasLoan)) in ('no', 'n', 'false', '0') then false
             when lower(trim(HasLoan)) in ('none', '') then null
-            else null  
+            else null
         end as has_loan
     from {{ source('raw', 'customers') }}
 )

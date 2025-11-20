@@ -367,4 +367,4 @@ select * from {{ ref('int_interest_calculated') }}
 
 
 
-                                          ![Success](https://media.giphy.com/media/111ebonMs90YLu/giphy.gif)
+![Success](https://media.giphy.com/media/111ebonMs90YLu/giphy.gif)

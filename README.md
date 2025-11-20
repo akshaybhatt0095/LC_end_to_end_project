@@ -136,26 +136,33 @@ When the pipeline completes, it generates: output/account_summary.csv
 
 ## 📌 Assumptions Made
 
-Data Assumptions
-•	All AccountID and CustomerID represent unique identifiers.
-•	Balance may be null in raw files → replaced with 0 during staging.(Normalized and assumed as zero )
-	    If raw Balance is NULL, system treats it as 0 because the downstream interest calculation requires a numeric value. Balances can be negative as well, and the coalesce(..., 0) was added only to avoid dbt test failures. It does not imply that negative balances are disallowed.
-•	AccountType contains messy values → normalized to lowercase + trimmed.
-•	has_loan may be missing or None → accepted values include null.
-
-Modeling Assumptions
-•	customer_id is always the join key.
-•	Staging layer should only clean and cast fields (no business logic).
-•	Intermediate layer handles enrichment.
-•	Marts layer produces final aggregates/tables.
-
-Test Assumptions
-•	Null balances are treated as valid raw data but must be resolved in staging.
-•	All accounts must refer to a valid customer.
-•	Accepted account types limited to: checking and savings (There can be other values in industry)
+### **Data Assumptions**
+- All `AccountID` and `CustomerID` represent unique identifiers.
+- `Balance` may be null in raw files → replaced with `0` during staging  
+  - If raw `Balance` is `NULL`, the system treats it as `0` because downstream interest calculations require a numeric value.  
+  - **Negative balances are allowed**.  
+  - `coalesce(..., 0)` was added mainly to avoid dbt test failures — it does *not* imply negative balances are invalid.
+- `AccountType` contains messy values → normalized to lowercase + trimmed.
+- `has_loan` may be missing or `None` → accepted values include `null`.
 
 
-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+### **Modeling Assumptions**
+- `customer_id` is always the join key.
+- Staging layer should only **clean and cast** fields (no business logic).
+- Intermediate layer handles **data enrichment**.
+- Marts layer produces **final aggregates/tables**.
+
+
+
+### **Test Assumptions**
+- Null balances are valid in raw data but must be resolved in staging.
+- All accounts must reference a valid customer.
+- Accepted account types are limited to: **checking** and **savings**  
+  - (Although more types may exist in real financial systems.)
+
+
+---
 
 
 ## ⚙️ Design Decisions & Trade-offs

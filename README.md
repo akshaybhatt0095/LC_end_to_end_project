@@ -366,12 +366,5 @@ select * from {{ ref('int_interest_calculated') }}
   - not_null
 
 
-![Docker Run](https://media.giphy.com/media/3o7aCTfyhYawdOXcFW/giphy.gif)
 
-![Dagster UI](https://media.giphy.com/media/l0HlQ7LRal8VD6VfC/giphy.gif)
-
-![dbt run](https://media.giphy.com/media/26FPpC4E0d4BxZ8Lu/giphy.gif)
-
-![Data Flow](https://media.giphy.com/media/xTiTnqUxyWbsAXq7Ju/giphy.gif)
-
-![Success](https://media.giphy.com/media/111ebonMs90YLu/giphy.gif)
+                                          ![Success](https://media.giphy.com/media/111ebonMs90YLu/giphy.gif)

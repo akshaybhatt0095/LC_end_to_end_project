@@ -14,7 +14,7 @@ The pipeline has three major components:
 	•	Orchestration — A Dagster job that runs all assets sequentially
 
 
-### What the Pipeline Does: 
+### What the pipeline Does: 
 
 1. Ingest raw source data into DuckDB (Ligh weighted Database)
 
@@ -156,9 +156,7 @@ Modeling Assumptions
 Test Assumptions
 •	Null balances are treated as valid raw data but must be resolved in staging.
 •	All accounts must refer to a valid customer.
-•	Accepted account types limited to:
-•	checking
-•	savings
+•	Accepted account types limited to: checking and savings (There can be other values in industry)
 
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -314,47 +312,46 @@ select * from {{ ref('int_interest_calculated') }}
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ### DBT TESTS
-📌 Staging Layer Tests
 
-stg_customers
-•	customer_id
-•	not_null
-•	unique
-•	name
-•	not_null
-•	has_loan
-•	accepted_values → [true, false, null]
+📌 **Staging Layer Tests**
 
-stg_accounts
-•	account_id
-•	not_null
-•	customer_id
-•	not_null
-•	relationships → references stg_customers.customer_id
-•	balance
-•	not_null
-•	account_type
-•	not_null
-•	accepted_values → ['checking', 'savings']
+#### `stg_customers`
+- **customer_id**
+  - not_null
+  - unique
+- **name**
+  - not_null
+- **has_loan**
+  - accepted_values → `[true, false, null]`
 
-⸻
+#### `stg_accounts`
+- **account_id**
+  - not_null
+- **customer_id**
+  - not_null
+  - relationships → references `stg_customers.customer_id`
+- **balance**
+  - not_null
+- **account_type**
+  - not_null
+  - accepted_values → `['checking', 'savings']`
 
-📌 Intermediate Layer Tests
+---
 
-int_accounts_joined
-•	customer_id
-•	relationships → references stg_customers.customer_id
-•	account_id
-•	not_null
+📌 **Intermediate Layer Tests**
 
-⸻
+#### `int_accounts_joined`
+- **customer_id**
+  - relationships → references `stg_customers.customer_id`
+- **account_id**
+  - not_null
 
-📌 Marts Layer Tests
+---
 
-account_summary
-•	account_id
-•	not_null
+📌 **Marts Layer Tests**
 
-
+#### `account_summary`
+- **account_id**
+  - not_null
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------

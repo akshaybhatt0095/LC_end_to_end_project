@@ -15,10 +15,13 @@ The pipeline has three major components:
 
 
 
-![Pipeline Flow](images/pipeline_flow.png)
+### Pipeline Flow
 
+<img src="images/pipeline_flow.png" width="8000" height="3000">
 
-![Pipeline Flow](images/Database_result.png)
+### Final Results viewed in Datagrip
+
+<img src="images/Database_result.png" width="4000" height="500">
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -93,7 +96,7 @@ When the pipeline completes we generate: output/account_summary.csv
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
-### Assumptions Made
+### 📌 Assumptions Made
 
 Data Assumptions
 	•	All AccountID and CustomerID represent unique identifiers.
@@ -145,7 +148,7 @@ Prevents duplicate definitions and manifest errors.
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-###  What I Would Improve Next
+### 📌 What I Would Improve Next
 
 1. Switch to Postgres or other cloud based data warehouses.
 	•	Fix concurrency problems
@@ -169,7 +172,7 @@ Prevents duplicate definitions and manifest errors.
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-### DBT MODELS
+### 📌 DBT MODELS
 
 ## Staging accounts model
 
@@ -264,3 +267,38 @@ from base
 
 select * from {{ ref('int_interest_calculated') }}
 ```
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+### 📌 DBT TESTS
+
+## Staging level tests
+
+|------------------|------------------|---------------------|-------------------------------|
+| Model            | Column           | Test Type           | Details                       |
+|------------------|------------------|---------------------|-------------------------------|
+| stg_customers    | customer_id      | not_null            | Must not be NULL              |
+| stg_customers    | customer_id      | unique              | No duplicate IDs allowed      |
+| stg_customers    | name             | not_null            | Must not be NULL              |
+| stg_customers    | has_loan         | accepted_values     | Allowed: true, false, null.   |
+|------------------|------------------|---------------------|-------------------------------|
+| stg_accounts     | account_id       | not_null            | Must not be NULL              |
+| stg_accounts     | customer_id      | not_null            | Must not be NULL              |
+| stg_accounts     | customer_id      | relationships       | FK → stg_customers.customer_id|
+| stg_accounts     | balance          | not_null            | Must not be NULL              |
+| stg_accounts     | account_type     | not_null            | Must not be NULL              |
+| stg_accounts     | account_type     | accepted_values     | Allowed: checking, savings.   |
+|------------------|------------------|---------------------|-------------------------------|
+
+
+## Intermediate level tests
+
++------------------------+----------------------+-----------------------------+-------------------------------------------|
+|       Model Name       |    Column Name       |           Test Type         |                Test Details               |
++------------------------+----------------------+-----------------------------|-------------------------------------------|
+| int_accounts_joined    | customer_id          | relationships               | to: ref('stg_customers')                  |
+|                        |                      |                             | field: customer_id                        |
++------------------------+----------------------+-----------------------------|-------------------------------------------|
+| int_accounts_joined    | account_id           | not_null                    | Ensures no NULL account_id values         |
++------------------------+----------------------+-----------------------------+-------------------------------------------|

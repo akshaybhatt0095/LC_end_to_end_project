@@ -1,4 +1,4 @@
-## 📌 Project Overview
+## <img src="https://media.giphy.com/media/WUlplcMpOCEmTGBtBW/giphy.gif" width="30"> Project Overview
 
 This project implements a fully containerized local data pipeline that:
 1.	Ingests raw CSV files into DuckDB using Dagster assets

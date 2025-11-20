@@ -73,7 +73,7 @@ The pipeline has three major components:
 
 ### **Prerequisites**
 - Docker Desktop installed (Mac / Windows / Linux)
-- No local Python, dbt, or Dagster installation required
+- No local Python, dbt, or Dagster installation required (Everything runs within Docker)
 
 
 ### **1. Build and Start the Pipeline**
@@ -114,7 +114,7 @@ NOTE - All the pipeline run images and docker run images are stored in the image
 **Key tests:**
 - not_null on PKs and required fields  
 - Relationships: `stg_accounts.customer_id` → `stg_customers.customer_id`  
-- Accepted values: `account_type ∈ { checking, savings }`
+- Accepted values: `account_type - { checking, savings }`
 
 
 #### **Intermediate Layer**

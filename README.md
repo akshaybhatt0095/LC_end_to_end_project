@@ -1,17 +1,17 @@
 ## 📌 Project Overview
 
 This project implements a fully containerized local data pipeline that:
-	1.	Ingests raw CSV files into DuckDB using Dagster assets
-	2.	Transforms data using dbt (staging, intermediate, marts layers)
-	3.	Runs data quality tests at multiple layers
-	4.	Materializes final reporting tables
-	5.	Outputs final CSV artifact locally and is connected to DataGrip to explore tables
-	6.	Runs end-to-end using Docker Compose, no local dependencies required.
+1.	Ingests raw CSV files into DuckDB using Dagster assets
+2.	Transforms data using dbt (staging, intermediate, marts layers)
+3.	Runs data quality tests at multiple layers
+4.	Materializes final reporting tables
+5.	Outputs final CSV artifact locally and is connected to DataGrip to explore tables
+6.	Runs end-to-end using Docker Compose, no local dependencies required.
 
 The pipeline has three major components:
-	•	Ingestion — Dagster assets (raw_accounts, raw_customers)
-	•	Transformation — dbt models (staging, intermediate, marts)
-	•	Orchestration — A Dagster job that runs all assets sequentially
+1.	Ingestion — Dagster assets (raw_accounts, raw_customers)
+2.	Transformation — dbt models (staging, intermediate, marts)
+3.	Orchestration — A Dagster job that runs all assets sequentially
 
 
 ### What the pipeline Does: 

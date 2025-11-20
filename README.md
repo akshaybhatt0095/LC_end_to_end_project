@@ -14,6 +14,8 @@ The pipeline has three major components:
 	•	Orchestration — A Dagster job that runs all assets sequentially
 
 
+
+![Pipeline Flow](images/pipeline_flow.png)
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 🚀 Running the Pipeline 

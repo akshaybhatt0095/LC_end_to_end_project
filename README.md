@@ -1,4 +1,4 @@
-📌 Project Overview
+### 📌 Project Overview
 
 This project implements a fully containerized local data pipeline that:
 	1.	Ingests raw CSV files into DuckDB using Dagster assets
@@ -22,7 +22,7 @@ The pipeline has three major components:
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-🚀 Running the Pipeline 
+### 🚀 Running the Pipeline 
 
 Prerequisites
 	•	Docker Desktop installed (Mac, Windows, Linux)
@@ -48,7 +48,7 @@ Note - All the pipeline run images and docker run images are stored in the image
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
-🧩 Pipeline Components
+### 🧩 Pipeline Components
 
 🔹 1. Ingestion (Dagster)
 
@@ -93,7 +93,7 @@ When the pipeline completes we generate: output/account_summary.csv
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
--  Assumptions Made
+### Assumptions Made
 
 Data Assumptions
 	•	All AccountID and CustomerID represent unique identifiers.
@@ -119,7 +119,7 @@ Test Assumptions
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
-⚙️ Design Decisions & Trade-offs
+### ⚙️ Design Decisions & Trade-offs
 
 1. DuckDB Chosen for Local Warehousing
 	•	Lightweight, file-based, ideal for local running
@@ -145,7 +145,7 @@ Prevents duplicate definitions and manifest errors.
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-🚧 What I Would Improve Next
+###  What I Would Improve Next
 
 1. Switch to Postgres or other cloud based data warehouses.
 	•	Fix concurrency problems
@@ -169,9 +169,9 @@ Prevents duplicate definitions and manifest errors.
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-DBT MODELS
+### DBT MODELS
 
-## staging accounts model
+## Staging accounts model
 
 ```sql
 {{ config(materialized='view', schema='analytics') }}
@@ -189,7 +189,7 @@ select * from raw
 ```
 
 
-## staging customers model
+## Staging customers model
 
 ```sql
 {{ config(materialized='view', schema='analytics') }}
@@ -210,7 +210,7 @@ with raw as (
 select * from raw
 ```
 
-## intermediate accounts joined model
+## Intermediate accounts joined model
 
 ```sql
 {{ config(materialized='view', schema='analytics') }}
@@ -227,7 +227,7 @@ left join {{ ref('stg_customers') }} c
 where lower(a.account_type) = 'savings'
 ```
 
-## intermediate interest calculation model
+## Intermediate interest calculation model
 
 ```sql
 {{ config(materialized='view', schema='analytics') }}

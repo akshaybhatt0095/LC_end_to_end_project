@@ -1,8 +1,0 @@
-default:
-  target: dev
-  outputs:
-    dev:
-      type: duckdb
-      path: /app/dbt/warehouse.duckdb
-      schema: analytics
-      threads: 1

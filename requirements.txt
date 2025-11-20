@@ -1,8 +1,0 @@
-dagster==1.8.1
-dagster-webserver==1.8.1
-dagster-duckdb==0.24.1
-dagster-dbt
-dbt-core==1.8.6
-dbt-duckdb==1.8.4
-duckdb==1.1.3
-pandas

@@ -18,7 +18,7 @@ The pipeline has three major components:
 ### What the pipeline Does: 
 
 1. Ingest raw source data into DuckDB (Ligh weighted Database)
-	Dagster assets (raw_accounts, raw_customers) read raw CSV files from the local filesystem and load them into a DuckDB analytical database. This establishes the foundation for all downstream transformations.
+- Dagster assets (raw_accounts, raw_customers) read raw CSV files from the local filesystem and load them into a DuckDB analytical database. This establishes the foundation for all downstream transformations.
 
 
 2. Transform data across dbt layers (Staging → Intermediate → Marts)
@@ -31,7 +31,6 @@ The pipeline has three major components:
 
 
 3. Run extensive data quality tests at every modeling layer
-	The project includes built-in dbt tests such as:
 - 	not_null
 -	unique
 -	accepted_values
@@ -40,15 +39,15 @@ These tests ensure upstream data consistency and downstream reliability.
 
 
 4. Output final artifact as a CSV file
-	A Dagster asset (account_summary_csv) exports the final table into a local directory (e.g. output/), making the results easy to inspect, share, or load elsewhere.
+-	A Dagster asset (account_summary_csv) exports the final table into a local directory (e.g. output/), making the results easy to inspect, share, or load elsewhere.
 
 
 5. Full pipeline orchestration via Dagster (Sequential Execution)
-	A Dagster job orchestrates the entire workflow:
--	Ensures assets run in the correct order
--	Enforces sequential execution to prevent DuckDB concurrency locks
--	Provides UI visibility into pipeline runs via Dagster Web UI
-Users can run the entire pipeline with: 'docker compose up --build'
+- A Dagster job orchestrates the entire workflow:
+- Ensures assets run in the correct order
+- Enforces sequential execution to prevent DuckDB concurrency locks
+- Provides UI visibility into pipeline runs via Dagster Web UI
+- Users can run the entire pipeline with: 'docker compose up --build'
 
 
 6.  Why This Pipeline Is Valuable?

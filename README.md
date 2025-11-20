@@ -14,7 +14,7 @@ The pipeline has three major components:
 	•	Orchestration — A Dagster job that runs all assets sequentially
 
 
- What the Pipeline Does: 
+## What the Pipeline Does: 
 
 1. Ingest raw source data into DuckDB (Ligh weighted Database)
 
@@ -57,7 +57,7 @@ The pipeline has three major components:
 •	Automated — One command to run full ingestion, transformations, validation, export
 
 
-### Pipeline Flow
+## Pipeline Flow
 
 <img src="images/pipeline_flow.png" width="8000" height="3000">
 
@@ -67,7 +67,7 @@ The pipeline has three major components:
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-### 🚀 Running the Pipeline 
+## 🚀 Running the Pipeline 
 
 Prerequisites
 	•	Docker Desktop installed (Mac, Windows, Linux)
@@ -93,7 +93,7 @@ Note - All the pipeline run images and docker run images are stored in the image
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
-### 🧩 Pipeline Components
+## 🧩 Pipeline Components
 
 🔹 1. Ingestion (Dagster)
 
@@ -138,7 +138,7 @@ When the pipeline completes we generate: output/account_summary.csv
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
-### 📌 Assumptions Made
+## 📌 Assumptions Made
 
 Data Assumptions
 •	All AccountID and CustomerID represent unique identifiers.
@@ -164,7 +164,7 @@ Test Assumptions
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
-### ⚙️ Design Decisions & Trade-offs
+## ⚙️ Design Decisions & Trade-offs
 
 1. DuckDB Chosen for Local Warehousing
 	•	Lightweight, file-based, ideal for local running
@@ -190,7 +190,7 @@ Prevents duplicate definitions and manifest errors.
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-### 📌 What I Would Improve Next
+## 📌 What I Would Improve Next
 
 1. Switch to Postgres or other cloud based data warehouses.
 	•	Fix concurrency problems
@@ -214,9 +214,9 @@ Prevents duplicate definitions and manifest errors.
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-### 📌 DBT MODELS
+## 📌 DBT MODELS
 
-## Staging accounts model
+# Staging accounts model
 
 ```sql
 {{ config(materialized='view', schema='analytics') }}
@@ -234,7 +234,7 @@ select * from raw
 ```
 
 
-## Staging customers model
+# Staging customers model
 
 ```sql
 {{ config(materialized='view', schema='analytics') }}
@@ -255,7 +255,7 @@ with raw as (
 select * from raw
 ```
 
-## Intermediate accounts joined model
+# Intermediate accounts joined model
 
 ```sql
 {{ config(materialized='view', schema='analytics') }}
@@ -272,7 +272,7 @@ left join {{ ref('stg_customers') }} c
 where lower(a.account_type) = 'savings'
 ```
 
-## Intermediate interest calculation model
+# Intermediate interest calculation model
 
 ```sql
 {{ config(materialized='view', schema='analytics') }}
@@ -302,7 +302,7 @@ select
 from base
 ```
 
-## Final account summary model
+# Final account summary model
 
 ```sql
 {{ config(materialized='table', schema='analytics') }}
@@ -313,47 +313,47 @@ select * from {{ ref('int_interest_calculated') }}
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-### DBT TESTS
+## DBT TESTS
 📌 Staging Layer Tests
 
 stg_customers
-	•	customer_id
-	•	not_null
-	•	unique
-	•	name
-	•	not_null
-	•	has_loan
-	•	accepted_values → [true, false, null]
+•	customer_id
+•	not_null
+•	unique
+•	name
+•	not_null
+•	has_loan
+•	accepted_values → [true, false, null]
 
 stg_accounts
-	•	account_id
-	•	not_null
-	•	customer_id
-	•	not_null
-	•	relationships → references stg_customers.customer_id
-	•	balance
-	•	not_null
-	•	account_type
-	•	not_null
-	•	accepted_values → ['checking', 'savings']
+•	account_id
+•	not_null
+•	customer_id
+•	not_null
+•	relationships → references stg_customers.customer_id
+•	balance
+•	not_null
+•	account_type
+•	not_null
+•	accepted_values → ['checking', 'savings']
 
 ⸻
 
 📌 Intermediate Layer Tests
 
 int_accounts_joined
-	•	customer_id
-	•	relationships → references stg_customers.customer_id
-	•	account_id
-	•	not_null
+•	customer_id
+•	relationships → references stg_customers.customer_id
+•	account_id
+•	not_null
 
 ⸻
 
 📌 Marts Layer Tests
 
 account_summary
-	•	account_id
-	•	not_null
+•	account_id
+•	not_null
 
 
 

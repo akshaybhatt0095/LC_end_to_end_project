@@ -17,24 +17,22 @@ The pipeline has three major components:
 ### What the pipeline Does: 
 
 1. Ingest raw source data into DuckDB (Ligh weighted Database)
-
-	Dagster assets (raw_accounts, raw_customers) read raw CSV files from the local filesystem and load them into a DuckDB analytical database.
-	This establishes the foundation for all downstream transformations.
+- Dagster assets (raw_accounts, raw_customers) read raw CSV files from the local filesystem and load them into a DuckDB analytical database. This establishes the foundation for all downstream transformations.
 
 2. Transform data across dbt layers (Staging → Intermediate → Marts)
-•	Staging layer (stg_*)
+- Staging layer (stg_*)
 	Cleans, normalizes, and enforces typing on source data.
-•	Intermediate layer (int_*)
+- Intermediate layer (int_*)
 	Enriches and joins data across source systems.
-•	Marts layer (account_summary)
+- Marts layer (account_summary)
 	Produces final business-facing reporting tables.
 
 3. Run extensive data quality tests at every modeling layer
 The project includes built-in dbt tests such as:
-•	not_null
-•	unique
-•	accepted_values
-•	relationships (foreign key enforcement)
+- 	not_null
+-	unique
+-	accepted_values
+-	relationships (foreign key enforcement)
 
 These tests ensure upstream data consistency and downstream reliability.
 
@@ -43,18 +41,18 @@ A Dagster asset (account_summary_csv) exports the final table into a local direc
 
 5. Full pipeline orchestration via Dagster (Sequential Execution)
 A Dagster job orchestrates the entire workflow:
-•	Ensures assets run in the correct order
-•	Enforces sequential execution to prevent DuckDB concurrency locks
-•	Provides UI visibility into pipeline runs via Dagster Web UI
+-	Ensures assets run in the correct order
+-	Enforces sequential execution to prevent DuckDB concurrency locks
+-	Provides UI visibility into pipeline runs via Dagster Web UI
 
 	Users can run the entire pipeline with: 'docker compose up --build'
 
 6.  Why This Pipeline Is Valuable?
-•	Portable — Entire stack runs in Docker; no local Python/dbt installations required
-•	Tested — Strong data tests ensure reliability
-•	Extensible — Add models, tests, sources, jobs easily
-•	Modern — Uses best practices from the modern data stack: DuckDB + dbt + Dagster
-•	Automated — One command to run full ingestion, transformations, validation, export
+-	Portable — Entire stack runs in Docker; no local Python/dbt installations required
+-	Tested — Strong data tests ensure reliability
+-	Extensible — Add models, tests, sources, jobs easily
+-	Modern — Uses best practices from the modern data stack: DuckDB + dbt + Dagster
+-	Automated — One command to run full ingestion, transformations, validation, export
 
 
 ### Pipeline Flow
@@ -70,16 +68,16 @@ A Dagster job orchestrates the entire workflow:
 ## 🚀 Running the Pipeline 
 
 Prerequisites
-•	Docker Desktop installed (Mac, Windows, Linux)
-•	No local Python/dbt/Dagster needed
+- Docker Desktop installed (Mac, Windows, Linux)
+- No local Python/dbt/Dagster needed
 
 1. Build and Start the Pipeline
 - docker compose down -v
 - docker compose up --build
 
 2. Run the Full Pipeline
-Dagster UI is exposed at: http://localhost:3000
-•	Jobs → pipeline_job → Launch Run
+- Dagster UI is exposed at: http://localhost:3000
+- Jobs → pipeline_job → Launch Run
 
 
 NOTE - All the pipeline run images and docker run images are stored in the images directory.

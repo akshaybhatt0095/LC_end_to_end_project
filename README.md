@@ -35,7 +35,7 @@ The pipeline has three major components:
 -	unique
 -	accepted_values
 -	relationships (foreign key enforcement)
-	These tests ensure upstream data consistency and downstream reliability.
+- These tests ensure upstream data consistency and downstream reliability.
 
 
 4. Output final artifact as a CSV file
@@ -91,41 +91,47 @@ NOTE - All the pipeline run images and docker run images are stored in the image
 
 ## 🧩 Pipeline Components
 
-🔹 1. Ingestion (Dagster)
+### 🔹 1. Ingestion (Dagster)
 
-•	raw_accounts - Reads data/accounts.csv into DuckDB → raw.accounts
+- **raw_accounts**  
+  - Reads `data/accounts.csv` into DuckDB → `raw.accounts`
+- **raw_customers**  
+  - Reads `data/customers.csv` into DuckDB → `raw.customers`
 
-•	raw_customers - Reads data/customers.csv into DuckDB → raw.customers
+---
 
+### 🔹 2. dbt Transformations
 
-🔹 2. dbt Transformations
+#### **Staging Layer**
+- Type casting  
+- Normalization (trim, lowercase)  
+- Schema tests  
 
-- Staging Layer
-•	Type casting
-•	Normalization (trim, lowercase)
-•	Schema tests
+**Key tests:**
+- not_null on PKs and required fields  
+- Relationships: `stg_accounts.customer_id` → `stg_customers.customer_id`  
+- Accepted values: `account_type ∈ { checking, savings }`
 
-- Key tests:
-•	not_null on PKs and required fields
-•	Relationships: stg_accounts.customer_id → stg_customers.customer_id
-•	Accepted values: account_type ∈ { checking, savings }
+---
 
-- Intermediate Layer
+#### **Intermediate Layer**
 
-int_accounts_joined
-•	Joins accounts with customers
+- **int_accounts_joined**
+  - Joins accounts with customers
 
-- Marts Layer
+---
 
-account_summary
-•	Final reporting table
-•	Materialized as table
+#### **Marts Layer**
 
+- **account_summary**
+  - Final reporting table
+  - Materialized as `table`
 
-📤 Output Files
+---
 
-When the pipeline completes we generate: output/account_summary.csv
+## 📤 Output Files
 
+When the pipeline completes, it generates: output/account_summary.csv
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
 

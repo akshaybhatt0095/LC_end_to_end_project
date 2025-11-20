@@ -16,6 +16,10 @@ The pipeline has three major components:
 
 
 ![Pipeline Flow](images/pipeline_flow.png)
+
+
+![Pipeline Flow](images/Database_result.png)
+
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 🚀 Running the Pipeline 

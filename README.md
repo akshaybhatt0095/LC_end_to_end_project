@@ -35,7 +35,7 @@ The pipeline has three major components:
 -	unique
 -	accepted_values
 -	relationships (foreign key enforcement)
-These tests ensure upstream data consistency and downstream reliability.
+	These tests ensure upstream data consistency and downstream reliability.
 
 
 4. Output final artifact as a CSV file

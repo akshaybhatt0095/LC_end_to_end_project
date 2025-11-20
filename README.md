@@ -69,15 +69,20 @@ The pipeline has three major components:
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-## 🚀 Running the Pipeline 
+## 🚀 Running the Pipeline
 
-Prerequisites
-- Docker Desktop installed (Mac, Windows, Linux)
-- No local Python/dbt/Dagster needed
+### **Prerequisites**
+- Docker Desktop installed (Mac / Windows / Linux)
+- No local Python, dbt, or Dagster installation required
 
-1. Build and Start the Pipeline
-- docker compose down -v
-- docker compose up --build
+
+### **1. Build and Start the Pipeline**
+Run the following commands:
+
+```bash
+docker compose down -v
+docker compose up --build
+```
 
 2. Run the Full Pipeline
 - Dagster UI is exposed at: http://localhost:3000
@@ -98,7 +103,6 @@ NOTE - All the pipeline run images and docker run images are stored in the image
 - **raw_customers**  
   - Reads `data/customers.csv` into DuckDB → `raw.customers`
 
----
 
 ### 🔹 2. dbt Transformations
 
@@ -131,8 +135,7 @@ NOTE - All the pipeline run images and docker run images are stored in the image
 
 When the pipeline completes, it generates: output/account_summary.csv
 
-------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
+---
 
 ## 📌 Assumptions Made
 
@@ -146,13 +149,11 @@ When the pipeline completes, it generates: output/account_summary.csv
 - `has_loan` may be missing or `None` → accepted values include `null`.
 
 
-
 ### **Modeling Assumptions**
 - `customer_id` is always the join key.
 - Staging layer should only **clean and cast** fields (no business logic).
 - Intermediate layer handles **data enrichment**.
 - Marts layer produces **final aggregates/tables**.
-
 
 
 ### **Test Assumptions**
@@ -164,56 +165,65 @@ When the pipeline completes, it generates: output/account_summary.csv
 
 ---
 
-
 ## ⚙️ Design Decisions & Trade-offs
 
-1. DuckDB Chosen for Local Warehousing
-	•	Lightweight, file-based, ideal for local running
-	•	Avoids setup complexities of Postgres/Snowflake
-	•	Limitation: no concurrent writes → forced sequential execution
-
-2. dbt for Transformations
-	•	Best practice ELT modeling
-	•	Easy testing + documentation
-
-3. Dagster as Orchestrator
-	•	Asset-based workflow fits ingestion → dbt → output
-	•	Clear lineage
-	•	Easy Docker deployment
-
-4. YAML Test Placement Separated by Layer
-	•	staging.yml for stg_* models
-	•	intermediate.yml for int_*
-	•	marts.yml for final mart tables
-
-Prevents duplicate definitions and manifest errors.
+### **1. DuckDB Chosen for Local Warehousing**
+- Lightweight, file-based, ideal for local execution
+- Avoids setup complexities of Postgres/Snowflake
+- **Trade-off:** No concurrent writes → forces sequential execution
 
 
-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+### **2. dbt for Transformations**
+- Follows best-practice ELT modeling
+- Built-in testing + documentation simplify development
+
+
+### **3. Dagster as Orchestrator**
+- Asset-based workflow fits *Ingestion → dbt → Output*
+- Provides clear lineage and observability
+- Supports easy containerization (Docker-friendly)
+
+
+### **4. YAML Test Placement Separated by Layer**
+- `staging.yml` for `stg_*` models  
+- `intermediate.yml` for `int_*` models  
+- `marts.yml` for final mart tables  
+
+This prevents duplicate test definitions and avoids manifest build errors.
+
+
+---
 
 ## 📌 What I Would Improve Next
 
-1. Switch to Postgres or other cloud based data warehouses.
-	•	Fix concurrency problems
-	•	Allow parallel asset execution
+### **1. Switch to Postgres or a Cloud Data Warehouse**
+- Fix concurrency limitations in DuckDB  
+- Enable parallel asset execution  
+- Better scaling for larger datasets
 
-2. Add surrogate keys (Customerid and account_id)
 
-3. Add more derived metrics in final datamart like total_interest_accrued, avg_balance, etc.
+### **2. Add Surrogate Keys**
+- Introduce surrogate keys for `customer_id` and `account_id`  
+- Improves join stability and auditability
 
-4. Add schedules to the pipeline
-   @schedule(cron_schedule="0 * * * *", job=pipeline_job)
-    def hourly_run(_):
+
+### **3. Expand Final Datamart Metrics**
+- Add derived metrics such as:  
+  - `total_interest_accrued`  
+  - `avg_balance`  
+  - `num_accounts`  
+  - `has_negative_balance`  
+
+
+### **4. Add Scheduled Pipeline Runs**
+Example Dagster schedule:
+
+```python
+@schedule(cron_schedule="0 * * * *", job=pipeline_job)
+def hourly_run(_):
     return {}
-
-5. Add schema validation before loading
-
-6. Add more logging and try catch methods
-
-7. Save multiple output types - Eg: Parquet
-
-
-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+```
+---
 
 ## 📌 DBT MODELS
 
@@ -312,7 +322,7 @@ select * from {{ ref('int_interest_calculated') }}
 ```
 
 
-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+---
 
 ## DBT TESTS
 
@@ -339,7 +349,6 @@ select * from {{ ref('int_interest_calculated') }}
   - not_null
   - accepted_values → `['checking', 'savings']`
 
----
 
 📌 **Intermediate Layer Tests**
 
@@ -349,12 +358,9 @@ select * from {{ ref('int_interest_calculated') }}
 - **account_id**
   - not_null
 
----
 
 📌 **Marts Layer Tests**
 
 #### `account_summary`
 - **account_id**
   - not_null
-
-------------------------------------------------------------------------------------------------------------------------------------------------------------------

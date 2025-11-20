@@ -73,14 +73,9 @@ Prerequisites
 •	Docker Desktop installed (Mac, Windows, Linux)
 •	No local Python/dbt/Dagster needed
 
-
 1. Build and Start the Pipeline
-
-•	docker compose down -v
-•	docker compose up --build
-
-
-
+- docker compose down -v
+- docker compose up --build
 
 2. Run the Full Pipeline
 Dagster UI is exposed at: http://localhost:3000
@@ -96,11 +91,9 @@ NOTE - All the pipeline run images and docker run images are stored in the image
 
 🔹 1. Ingestion (Dagster)
 
-•	raw_accounts
-	Reads data/accounts.csv into DuckDB → raw.accounts
+•	raw_accounts - Reads data/accounts.csv into DuckDB → raw.accounts
 
-•	raw_customers
-	Reads data/customers.csv into DuckDB → raw.customers
+•	raw_customers - Reads data/customers.csv into DuckDB → raw.customers
 
 
 🔹 2. dbt Transformations

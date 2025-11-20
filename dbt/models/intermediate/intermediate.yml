@@ -1,0 +1,15 @@
+version: 2
+
+models:
+  - name: int_accounts_joined
+    description: "Accounts enriched with customer attributes"
+    columns:
+      - name: customer_id
+        tests:
+          - relationships:
+              to: ref('stg_customers')
+              field: customer_id
+
+      - name: account_id
+        tests:
+          - not_null

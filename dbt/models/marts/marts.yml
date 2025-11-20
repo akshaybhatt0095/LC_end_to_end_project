@@ -1,0 +1,8 @@
+version: 2
+models:
+  - name: account_summary
+    description: "Final summary of interest calculations"
+    columns:
+      - name: account_id
+        tests:
+          - not_null

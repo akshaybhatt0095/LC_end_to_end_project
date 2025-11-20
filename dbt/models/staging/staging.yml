@@ -1,0 +1,43 @@
+version: 2
+
+models:
+  - name: stg_customers
+    description: "Staged customers data cleaned and standardized"
+    columns:
+      - name: customer_id
+        tests:
+          - not_null
+          - unique
+
+      - name: name
+        tests:
+          - not_null
+
+      - name: has_loan
+        tests:
+          - accepted_values:
+              values: [true, false, null]
+
+  - name: stg_accounts
+    description: "Staged accounts data cleaned and typed"
+    columns:
+      - name: account_id
+        tests:
+          - not_null
+
+      - name: customer_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_customers')
+              field: customer_id
+
+      - name: balance
+        tests:
+          - not_null
+
+      - name: account_type
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['checking', 'savings']

@@ -1,4 +1,4 @@
-### 📌 Project Overview
+# 📌 Project Overview
 
 This project implements a fully containerized local data pipeline that:
 	1.	Ingests raw CSV files into DuckDB using Dagster assets
@@ -14,7 +14,7 @@ The pipeline has three major components:
 	•	Orchestration — A Dagster job that runs all assets sequentially
 
 
-## What the Pipeline Does: 
+### What the Pipeline Does: 
 
 1. Ingest raw source data into DuckDB (Ligh weighted Database)
 
@@ -57,7 +57,7 @@ The pipeline has three major components:
 •	Automated — One command to run full ingestion, transformations, validation, export
 
 
-## Pipeline Flow
+### Pipeline Flow
 
 <img src="images/pipeline_flow.png" width="8000" height="3000">
 
@@ -67,7 +67,7 @@ The pipeline has three major components:
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-## 🚀 Running the Pipeline 
+### 🚀 Running the Pipeline 
 
 Prerequisites
 	•	Docker Desktop installed (Mac, Windows, Linux)
@@ -93,7 +93,7 @@ Note - All the pipeline run images and docker run images are stored in the image
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
-## 🧩 Pipeline Components
+### 🧩 Pipeline Components
 
 🔹 1. Ingestion (Dagster)
 
@@ -138,7 +138,7 @@ When the pipeline completes we generate: output/account_summary.csv
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
-## 📌 Assumptions Made
+### 📌 Assumptions Made
 
 Data Assumptions
 •	All AccountID and CustomerID represent unique identifiers.
@@ -164,7 +164,7 @@ Test Assumptions
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
-## ⚙️ Design Decisions & Trade-offs
+### ⚙️ Design Decisions & Trade-offs
 
 1. DuckDB Chosen for Local Warehousing
 	•	Lightweight, file-based, ideal for local running
@@ -190,7 +190,7 @@ Prevents duplicate definitions and manifest errors.
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-## 📌 What I Would Improve Next
+### 📌 What I Would Improve Next
 
 1. Switch to Postgres or other cloud based data warehouses.
 	•	Fix concurrency problems
@@ -214,7 +214,7 @@ Prevents duplicate definitions and manifest errors.
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-## 📌 DBT MODELS
+### 📌 DBT MODELS
 
 # Staging accounts model
 
@@ -313,7 +313,7 @@ select * from {{ ref('int_interest_calculated') }}
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-## DBT TESTS
+### DBT TESTS
 📌 Staging Layer Tests
 
 stg_customers

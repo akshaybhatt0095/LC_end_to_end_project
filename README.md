@@ -97,7 +97,8 @@ When the pipeline completes we generate: output/account_summary.csv
 
 Data Assumptions
 	•	All AccountID and CustomerID represent unique identifiers.
-	•	Balance may be null in raw files → replaced with 0 during staging.(Normalized)
+	•	Balance may be null in raw files → replaced with 0 during staging.(Normalized and assumed as zero )
+	    If raw Balance is NULL, system treats it as 0 because the downstream interest calculation requires a numeric value. Balances can be negative as well, and the coalesce(..., 0) was added only to avoid dbt test failures. It does not imply that negative balances are disallowed.
 	•	AccountType contains messy values → normalized to lowercase + trimmed.
 	•	has_loan may be missing or None → accepted values include null.
 
@@ -168,3 +169,21 @@ Prevents duplicate definitions and manifest errors.
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+DBT tests and transformations used.
+
+1. 
+## staging_accounts model
+
+```sql
+{{ config(materialized='view', schema='analytics') }}
+
+with raw as (
+    select
+        AccountID as account_id,
+        try_cast(CustomerID as integer) as customer_id,
+        coalesce(try_cast(Balance as double), 0) as balance,
+        lower(trim(AccountType)) as account_type
+    from {{ source('raw', 'accounts') }}
+)
+
+select * from raw

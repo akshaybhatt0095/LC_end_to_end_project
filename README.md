@@ -22,34 +22,34 @@ The pipeline has three major components:
 	This establishes the foundation for all downstream transformations.
 
 2. Transform data across dbt layers (Staging → Intermediate → Marts)
-	•	Staging layer (stg_*)
-		Cleans, normalizes, and enforces typing on source data.
-	•	Intermediate layer (int_*)
-		Enriches and joins data across source systems.
-	•	Marts layer (account_summary)
-		Produces final business-facing reporting tables.
+•	Staging layer (stg_*)
+	Cleans, normalizes, and enforces typing on source data.
+•	Intermediate layer (int_*)
+	Enriches and joins data across source systems.
+•	Marts layer (account_summary)
+	Produces final business-facing reporting tables.
 
 3. Run extensive data quality tests at every modeling layer
-	The project includes built-in dbt tests such as:
-	•	not_null
-	•	unique
-	•	accepted_values
-	•	relationships (foreign key enforcement)
+The project includes built-in dbt tests such as:
+•	not_null
+•	unique
+•	accepted_values
+•	relationships (foreign key enforcement)
 
-	These tests ensure upstream data consistency and downstream reliability.
+These tests ensure upstream data consistency and downstream reliability.
 
 4. Output final artifact as a CSV file
-	A Dagster asset (account_summary_csv) exports the final table into a local directory (e.g. output/), making the results easy to inspect, share, or load elsewhere.
+A Dagster asset (account_summary_csv) exports the final table into a local directory (e.g. output/), making the results easy to inspect, share, or load elsewhere.
 
 5. Full pipeline orchestration via Dagster (Sequential Execution)
-	A Dagster job orchestrates the entire workflow:
-	•	Ensures assets run in the correct order
-	•	Enforces sequential execution to prevent DuckDB concurrency locks
-	•	Provides UI visibility into pipeline runs via Dagster Web UI
+A Dagster job orchestrates the entire workflow:
+•	Ensures assets run in the correct order
+•	Enforces sequential execution to prevent DuckDB concurrency locks
+•	Provides UI visibility into pipeline runs via Dagster Web UI
 
 	Users can run the entire pipeline with: 'docker compose up --build'
 
-6.  Why This Pipeline Is Valuable
+6.  Why This Pipeline Is Valuable?
 •	Portable — Entire stack runs in Docker; no local Python/dbt installations required
 •	Tested — Strong data tests ensure reliability
 •	Extensible — Add models, tests, sources, jobs easily
@@ -70,25 +70,24 @@ The pipeline has three major components:
 ## 🚀 Running the Pipeline 
 
 Prerequisites
-	•	Docker Desktop installed (Mac, Windows, Linux)
-	•	No local Python/dbt/Dagster needed
+•	Docker Desktop installed (Mac, Windows, Linux)
+•	No local Python/dbt/Dagster needed
 
 
 1. Build and Start the Pipeline
 
-docker compose down -v
-docker compose up --build
+•	docker compose down -v
+•	docker compose up --build
 
-Dagster UI is exposed at: http://localhost:3000
+
 
 
 2. Run the Full Pipeline
+Dagster UI is exposed at: http://localhost:3000
+•	Jobs → pipeline_job → Launch Run
 
-In Dagster UI:
-Jobs → pipeline_job → Launch Run
 
-
-Note - All the pipeline run images and docker run images are stored in the images directory.
+NOTE - All the pipeline run images and docker run images are stored in the images directory.
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -97,37 +96,35 @@ Note - All the pipeline run images and docker run images are stored in the image
 
 🔹 1. Ingestion (Dagster)
 
-raw_accounts
+•	raw_accounts
+	Reads data/accounts.csv into DuckDB → raw.accounts
 
-Reads data/accounts.csv into DuckDB → raw.accounts
-
-raw_customers
-
-Reads data/customers.csv into DuckDB → raw.customers
+•	raw_customers
+	Reads data/customers.csv into DuckDB → raw.customers
 
 
 🔹 2. dbt Transformations
 
 - Staging Layer
-	•	Type casting
-	•	Normalization (trim, lowercase)
-	•	Schema tests
+•	Type casting
+•	Normalization (trim, lowercase)
+•	Schema tests
 
-   Key tests:
-	•	not_null on PKs and required fields
-	•	Relationships: stg_accounts.customer_id → stg_customers.customer_id
-	•	Accepted values: account_type ∈ { checking, savings }
+- Key tests:
+•	not_null on PKs and required fields
+•	Relationships: stg_accounts.customer_id → stg_customers.customer_id
+•	Accepted values: account_type ∈ { checking, savings }
 
 - Intermediate Layer
 
 int_accounts_joined
-	•	Joins accounts with customers
+•	Joins accounts with customers
 
 - Marts Layer
 
 account_summary
-	•	Final reporting table
-	•	Materialized as table
+•	Final reporting table
+•	Materialized as table
 
 
 📤 Output Files

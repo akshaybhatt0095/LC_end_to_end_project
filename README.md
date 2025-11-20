@@ -67,7 +67,7 @@ The pipeline has three major components:
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-### 🚀 Running the Pipeline 
+## 🚀 Running the Pipeline 
 
 Prerequisites
 	•	Docker Desktop installed (Mac, Windows, Linux)
@@ -93,7 +93,7 @@ Note - All the pipeline run images and docker run images are stored in the image
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
-### 🧩 Pipeline Components
+## 🧩 Pipeline Components
 
 🔹 1. Ingestion (Dagster)
 
@@ -138,7 +138,7 @@ When the pipeline completes we generate: output/account_summary.csv
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
-### 📌 Assumptions Made
+## 📌 Assumptions Made
 
 Data Assumptions
 •	All AccountID and CustomerID represent unique identifiers.
@@ -162,7 +162,7 @@ Test Assumptions
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
-### ⚙️ Design Decisions & Trade-offs
+## ⚙️ Design Decisions & Trade-offs
 
 1. DuckDB Chosen for Local Warehousing
 	•	Lightweight, file-based, ideal for local running
@@ -188,7 +188,7 @@ Prevents duplicate definitions and manifest errors.
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-### 📌 What I Would Improve Next
+## 📌 What I Would Improve Next
 
 1. Switch to Postgres or other cloud based data warehouses.
 	•	Fix concurrency problems
@@ -212,9 +212,9 @@ Prevents duplicate definitions and manifest errors.
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-### 📌 DBT MODELS
+## 📌 DBT MODELS
 
-# Staging accounts model
+### Staging accounts model
 
 ```sql
 {{ config(materialized='view', schema='analytics') }}
@@ -232,7 +232,7 @@ select * from raw
 ```
 
 
-# Staging customers model
+### Staging customers model
 
 ```sql
 {{ config(materialized='view', schema='analytics') }}
@@ -253,7 +253,7 @@ with raw as (
 select * from raw
 ```
 
-# Intermediate accounts joined model
+### Intermediate accounts joined model
 
 ```sql
 {{ config(materialized='view', schema='analytics') }}
@@ -270,7 +270,7 @@ left join {{ ref('stg_customers') }} c
 where lower(a.account_type) = 'savings'
 ```
 
-# Intermediate interest calculation model
+### Intermediate interest calculation model
 
 ```sql
 {{ config(materialized='view', schema='analytics') }}
@@ -300,7 +300,7 @@ select
 from base
 ```
 
-# Final account summary model
+### Final account summary model
 
 ```sql
 {{ config(materialized='table', schema='analytics') }}
@@ -311,7 +311,7 @@ select * from {{ ref('int_interest_calculated') }}
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-### DBT TESTS
+## DBT TESTS
 
 📌 **Staging Layer Tests**
 

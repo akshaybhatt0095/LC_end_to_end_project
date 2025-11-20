@@ -65,7 +65,7 @@ The pipeline has three major components:
 
 ### Final Results viewed in Datagrip
 
-<img src="images/Database_result.png" width="4000" height="3000">
+<img src="images/Database_result.png" width="4000" height="5000">
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
 

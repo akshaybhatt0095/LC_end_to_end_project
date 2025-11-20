@@ -365,6 +365,7 @@ select * from {{ ref('int_interest_calculated') }}
 - **account_id**
   - not_null
 
+---
 
-
-![Success](https://media.giphy.com/media/111ebonMs90YLu/giphy.gif)
+<img src="https://user-images.githubusercontent.com/74038190/212284158-e840e285-664b-44d7-b79b-e264b5e54825.gif" width="400">
+<br><br>

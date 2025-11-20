@@ -209,3 +209,58 @@ with raw as (
 
 select * from raw
 ```
+
+## intermediate accounts joined model
+
+```sql
+{{ config(materialized='view', schema='analytics') }}
+
+select
+    a.account_id,
+    a.customer_id,
+    a.balance,
+    a.account_type,
+    coalesce(c.has_loan, false) as has_loan
+from {{ ref('stg_accounts') }} a
+left join {{ ref('stg_customers') }} c
+    on a.customer_id = c.customer_id
+where lower(a.account_type) = 'savings'
+```
+
+## intermediate interest calculation model
+
+```sql
+{{ config(materialized='view', schema='analytics') }}
+
+with base as (
+    select
+        *,
+        case
+            when balance is null then 0.0
+            when balance < 10000 then 0.01
+            when balance >= 10000 and balance < 20000 then 0.015
+            else 0.02
+        end
+        +
+        case when has_loan = true then 0.005 else 0 end
+        as interest_rate
+    from {{ ref('int_accounts_joined') }}
+)
+
+select
+    account_id,
+    customer_id,
+    balance as original_balance,
+    interest_rate,
+    coalesce(balance, 0.0) * interest_rate as interest_amount,
+    coalesce(balance, 0.0) + (coalesce(balance,0.0) * interest_rate) as new_balance
+from base
+```
+
+## Final account summary model
+
+```sql
+{{ config(materialized='table', schema='analytics') }}
+
+select * from {{ ref('int_interest_calculated') }}
+```

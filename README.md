@@ -112,14 +112,12 @@ NOTE - All the pipeline run images and docker run images are stored in the image
 - Relationships: `stg_accounts.customer_id` → `stg_customers.customer_id`  
 - Accepted values: `account_type ∈ { checking, savings }`
 
----
 
 #### **Intermediate Layer**
 
 - **int_accounts_joined**
   - Joins accounts with customers
 
----
 
 #### **Marts Layer**
 

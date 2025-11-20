@@ -194,37 +194,6 @@ This prevents duplicate test definitions and avoids manifest build errors.
 
 ---
 
-## 📌 What I Would Improve Next
-
-### **1. Switch to Postgres or a Cloud Data Warehouse**
-- Fix concurrency limitations in DuckDB  
-- Enable parallel asset execution  
-- Better scaling for larger datasets
-
-
-### **2. Add Surrogate Keys**
-- Introduce surrogate keys for `customer_id` and `account_id`  
-- Improves join stability and auditability
-
-
-### **3. Expand Final Datamart Metrics**
-- Add derived metrics such as:  
-  - `total_interest_accrued`  
-  - `avg_balance`  
-  - `num_accounts`  
-  - `has_negative_balance`  
-
-
-### **4. Add Scheduled Pipeline Runs**
-Example Dagster schedule:
-
-```python
-@schedule(cron_schedule="0 * * * *", job=pipeline_job)
-def hourly_run(_):
-    return {}
-```
----
-
 ## 📌 DBT MODELS
 
 ### Staging accounts model
@@ -365,6 +334,37 @@ select * from {{ ref('int_interest_calculated') }}
 - **account_id**
   - not_null
 
+---
+
+## 📌 What I Would Improve Next
+
+### **1. Switch to Postgres or a Cloud Data Warehouse**
+- Fix concurrency limitations in DuckDB  
+- Enable parallel asset execution  
+- Better scaling for larger datasets
+
+
+### **2. Add Surrogate Keys**
+- Introduce surrogate keys for `customer_id` and `account_id`  
+- Improves join stability and auditability
+
+
+### **3. Expand Final Datamart Metrics**
+- Add derived metrics such as:  
+  - `total_interest_accrued`  
+  - `avg_balance`  
+  - `num_accounts`  
+  - `has_negative_balance`  
+
+
+### **4. Add Scheduled Pipeline Runs**
+Example Dagster schedule:
+
+```python
+@schedule(cron_schedule="0 * * * *", job=pipeline_job)
+def hourly_run(_):
+    return {}
+```
 ---
 
 ## <img src="https://user-images.githubusercontent.com/74038190/216122041-518ac897-8d92-4c6b-9b3f-ca01dcaf38ee.png" width="30" /> Thanks for Visiting [🔝]

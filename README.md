@@ -313,56 +313,48 @@ select * from {{ ref('int_interest_calculated') }}
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-### 📌 DBT TESTS
+### DBT TESTS
+📌 Staging Layer Tests
 
-## Staging level tests
+stg_customers
+	•	customer_id
+	•	not_null
+	•	unique
+	•	name
+	•	not_null
+	•	has_loan
+	•	accepted_values → [true, false, null]
 
-|------------------|------------------|---------------------|-------------------------------|
-| Model            | Column           | Test Type           | Details                       |
-|------------------|------------------|---------------------|-------------------------------|
-| stg_customers    | customer_id      | not_null            | Must not be NULL              |
-| stg_customers    | customer_id      | unique              | No duplicate IDs allowed      |
-| stg_customers    | name             | not_null            | Must not be NULL              |
-| stg_customers    | has_loan         | accepted_values     | Allowed: true, false, null.   |
-|------------------|------------------|---------------------|-------------------------------|
-| stg_accounts     | account_id       | not_null            | Must not be NULL              |
-| stg_accounts     | customer_id      | not_null            | Must not be NULL              |
-| stg_accounts     | customer_id      | relationships       | FK → stg_customers.customer_id|
-| stg_accounts     | balance          | not_null            | Must not be NULL              |
-| stg_accounts     | account_type     | not_null            | Must not be NULL              |
-| stg_accounts     | account_type     | accepted_values     | Allowed: checking, savings.   |
-|------------------|------------------|---------------------|-------------------------------|
+stg_accounts
+	•	account_id
+	•	not_null
+	•	customer_id
+	•	not_null
+	•	relationships → references stg_customers.customer_id
+	•	balance
+	•	not_null
+	•	account_type
+	•	not_null
+	•	accepted_values → ['checking', 'savings']
+
+⸻
+
+📌 Intermediate Layer Tests
+
+int_accounts_joined
+	•	customer_id
+	•	relationships → references stg_customers.customer_id
+	•	account_id
+	•	not_null
+
+⸻
+
+📌 Marts Layer Tests
+
+account_summary
+	•	account_id
+	•	not_null
 
 
-## Intermediate level tests
 
-customer_id  - to: ref('stg_customers') - field: customer_id test  
-account_id   - not_null test
-
-
-+----------------------+--------------------------+-----------------------------+---------------------------------------------------------------+
-|      Model Layer     |         Column           |           Test              |                           Description                         |
-+----------------------+--------------------------+-----------------------------+---------------------------------------------------------------+
-| STAGING              | stg_customers.customer_id| not_null                    | Customer ID must never be NULL                                |
-|                      |                          | unique                      | Customer ID must be unique                                     |
-+----------------------+--------------------------+-----------------------------+---------------------------------------------------------------+
-| STAGING              | stg_customers.name       | not_null                    | Customer name cannot be NULL                                   |
-+----------------------+--------------------------+-----------------------------+---------------------------------------------------------------+
-| STAGING              | stg_customers.has_loan   | accepted_values             | Only TRUE / FALSE / NULL are allowed                           |
-+----------------------+--------------------------+-----------------------------+---------------------------------------------------------------+
-| STAGING              | stg_accounts.account_id  | not_null                    | Account ID cannot be NULL                                      |
-+----------------------+--------------------------+-----------------------------+---------------------------------------------------------------+
-| STAGING              | stg_accounts.customer_id | not_null                    | Foreign key must exist                                         |
-|                      |                          | relationships               | Must match stg_customers.customer_id                           |
-+----------------------+--------------------------+-----------------------------+---------------------------------------------------------------+
-| STAGING              | stg_accounts.balance     | not_null                    | Balance cannot be NULL (after coalescing missing values)       |
-+----------------------+--------------------------+-----------------------------+---------------------------------------------------------------+
-| STAGING              | stg_accounts.account_type| not_null                    | Account type cannot be NULL                                    |
-|                      |                          | accepted_values             | Must be either 'checking' or 'savings'                         |
-+----------------------+--------------------------+-----------------------------+---------------------------------------------------------------+
-| INTERMEDIATE         | int_accounts_joined.customer_id | relationships         | Must match stg_customers.customer_id (FK test)                 |
-+----------------------+--------------------------+-----------------------------+---------------------------------------------------------------+
-| INTERMEDIATE         | int_accounts_joined.account_id  | not_null              | Account ID required after join                                 |
-+----------------------+--------------------------+-----------------------------+---------------------------------------------------------------+
-| MARTS                | account_summary.account_id| not_null                    | Final report must always have an account_id                    |
-+----------------------+--------------------------+-----------------------------+---------------------------------------------------------------+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------

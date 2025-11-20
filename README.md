@@ -61,11 +61,11 @@ The pipeline has three major components:
 
 ### Pipeline Flow
 
-<img src="images/pipeline_flow.png" width="8000" height="3000">
+<img src="images/pipeline_flow.png" width="8000" height="5000">
 
 ### Final Results viewed in Datagrip
 
-<img src="images/Database_result.png" width="4000" height="500">
+<img src="images/Database_result.png" width="4000" height="3000">
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
 

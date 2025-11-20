@@ -141,24 +141,24 @@ When the pipeline completes we generate: output/account_summary.csv
 ### 📌 Assumptions Made
 
 Data Assumptions
-	•	All AccountID and CustomerID represent unique identifiers.
-	•	Balance may be null in raw files → replaced with 0 during staging.(Normalized and assumed as zero )
+•	All AccountID and CustomerID represent unique identifiers.
+•	Balance may be null in raw files → replaced with 0 during staging.(Normalized and assumed as zero )
 	    If raw Balance is NULL, system treats it as 0 because the downstream interest calculation requires a numeric value. Balances can be negative as well, and the coalesce(..., 0) was added only to avoid dbt test failures. It does not imply that negative balances are disallowed.
-	•	AccountType contains messy values → normalized to lowercase + trimmed.
-	•	has_loan may be missing or None → accepted values include null.
+•	AccountType contains messy values → normalized to lowercase + trimmed.
+•	has_loan may be missing or None → accepted values include null.
 
 Modeling Assumptions
-	•	customer_id is always the join key.
-	•	Staging layer should only clean and cast fields (no business logic).
-	•	Intermediate layer handles enrichment.
-	•	Marts layer produces final aggregates/tables.
+•	customer_id is always the join key.
+•	Staging layer should only clean and cast fields (no business logic).
+•	Intermediate layer handles enrichment.
+•	Marts layer produces final aggregates/tables.
 
 Test Assumptions
-	•	Null balances are treated as valid raw data but must be resolved in staging.
-	•	All accounts must refer to a valid customer.
-	•	Accepted account types limited to:
-	•	checking
-	•	savings
+•	Null balances are treated as valid raw data but must be resolved in staging.
+•	All accounts must refer to a valid customer.
+•	Accepted account types limited to:
+•	checking
+•	savings
 
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
